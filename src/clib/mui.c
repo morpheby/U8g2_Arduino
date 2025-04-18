@@ -507,6 +507,18 @@ static uint8_t mui_task_form_end(mui_t *ui)
   return 0;     /* continue with the loop */
 }
 
+static uint8_t mui_task_form_save(mui_t *ui)
+{
+  muif_get_cb(ui->uif)(ui, MUIF_MSG_FORM_SAVE);
+  return 0;     /* continue with the loop */
+}
+
+static uint8_t mui_task_form_restore(mui_t *ui)
+{
+  muif_get_cb(ui->uif)(ui, MUIF_MSG_FORM_RESTORE);
+  return 0;     /* continue with the loop */
+}
+
 static uint8_t mui_uif_is_cursor_selectable(mui_t *ui) MUI_NOINLINE;
 static uint8_t mui_uif_is_cursor_selectable(mui_t *ui)
 {
@@ -827,6 +839,7 @@ void mui_SaveFormWithCursorPosition(mui_t *ui, uint8_t cursor_pos)
   ui->last_form_fds = ui->cursor_focus_fds;             // 25 Aug 2024: I think this is not required, u8g2 data function will store the value manually in last_form_fds
   ui->last_form_id[ui->last_form_stack_pos] = mui_get_fds_char(ui->current_form_fds+1);
   ui->last_form_cursor_focus_position[ui->last_form_stack_pos] = cursor_pos;
+  mui_loop_over_form(ui, mui_task_form_save);
 }
 
 /* 
@@ -851,7 +864,9 @@ uint8_t mui_RestoreForm(mui_t *ui)
     uint8_t form_id = ui->last_form_id[ui->last_form_stack_pos];
     uint8_t focus = ui->last_form_cursor_focus_position[ui->last_form_stack_pos];
     ui->last_form_stack_pos--;
-    return mui_GotoForm(ui, form_id, focus);
+    uint8_t result = mui_GotoForm(ui, form_id, focus);
+    mui_loop_over_form(ui, mui_task_form_restore);
+    return result;
     //ui->last_form_fds = NULL;
   }
   return 0;

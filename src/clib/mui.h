@@ -195,6 +195,8 @@ struct muif_struct
 #define MUIF_MSG_EVENT_NEXT 11
 /* MUIF_MSG_EVENT_PREV return values: 0=not handled, 1=handled, do nothing */
 #define MUIF_MSG_EVENT_PREV 12
+#define MUIF_MSG_FORM_SAVE 13
+#define MUIF_MSG_FORM_RESTORE 14
 
 /* dynamic flags */
 #define MUIF_DFLAG_IS_CURSOR_FOCUS 0x01

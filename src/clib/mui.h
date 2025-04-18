@@ -223,9 +223,13 @@ struct muif_struct
 #define MUI_MAX_TEXT_LEN 41
 #endif
 
+#ifndef MUI_MENU_CACHE_CNT
 #define MUI_MENU_CACHE_CNT 4
+#endif
 
+#ifndef MUI_MENU_LAST_FORM_STACK_SIZE
 #define MUI_MENU_LAST_FORM_STACK_SIZE 4
+#endif
 
 struct mui_struct
 {
